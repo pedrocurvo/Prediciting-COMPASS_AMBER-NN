@@ -139,7 +139,13 @@ for epoch in tqdm(range(EPOCHS)):
     torch.save(obj=model.state_dict(),
             f=MODEL_SAVE_PATH)
 
+
 # Plot Loss
+PLOT_PATH = Path('graphs')
+PLOT_PATH.mkdir(parents=True,
+                exist_ok=True)
+PLOT_NAME = "hadron_pearson_metrics.png"
+PLOT_SAVE_PATH = PLOT_PATH / PLOT_NAME
 plt.figure(figsize=(10,7))
 plt.plot(list_epoch, list_train_loss, label='Train Loss')
 plt.plot(list_epoch, list_test_loss, label='Test Loss')
@@ -148,6 +154,5 @@ plt.plot(list_epoch, list_test_acc, label='Test Accuracy')
 plt.plot(list_epoch, list_chi_squared, label='Chi Squared')
 plt.legend()
 plt.xlabel('Epoch')
-plt.yaxis('log')
 plt.show()
-plt.savefig("hadron_pearson_metrics.png", dpi=300)
+plt.savefig(PLOT_SAVE_PATH, dpi=300)

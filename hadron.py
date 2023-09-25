@@ -9,6 +9,12 @@ from pathlib import Path
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# Percentage of Data to be used
+PERCENT = 1
+
+# Number of Epochs
+EPOCHS = 10
+
 # Device Agnostic Code
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}\n")
@@ -17,26 +23,9 @@ print(f"Using device: {device}\n")
 file_hadr_rec = np.load('data/hadr_rec.npy')
 file_hadr_gen = np.load('data/hadr_gen.npy')
 
-# Percentage of Data to be used
-PERCENT = 1
-
 # Merge Generated Data with Reconstructed Data
 file_hadr = np.r_[file_hadr_rec[:int(file_hadr_rec.shape[0]*PERCENT)], file_hadr_gen[:int(file_hadr_gen.shape[0]*PERCENT)]]
 np.random.shuffle(file_hadr)
-
-# Calculate the Pearson Correlation Coefficient
-corr_matrix = np.corrcoef(file_hadr[:-1], rowvar=False)
-
-# Create a heatmap using Seaborn
-variables = ['Xb', 'Y', 'Z', 'Q2', 'Trig', 'PVz', 'PVx', 'PVy', 'Mom_mu', 'Mom_mup', 'dxdz_mup', 'dydz_mup', 'q', 'mom', 'dxdz', 'dydz']
-plt.figure(figsize=(16, 12))
-sns.set(font_scale=1)  # Adjust the font size if needed
-sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f",
-            xticklabels=variables, yticklabels=variables)
-plt.title("Pearson Correlation Matrix")
-
-# Save the plot as an image (e.g., PNG)
-plt.savefig("correlation_matrix.png", dpi=300)
 
 # Split Data into Target and Features
 X = torch.from_numpy(file_hadr[:,0:(file_hadr.shape[1]-1)]).type(torch.float32)
@@ -62,8 +51,6 @@ loss_fn = nn.BCEWithLogitsLoss()
 # Optimizer
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 
-# Number of Epochs
-EPOCHS = 10
 
 # Put all data on target device
 X_train, y_train = X_train.to(device), y_train.to(device)
@@ -154,6 +141,11 @@ for epoch in tqdm(range(EPOCHS)):
             f=MODEL_SAVE_PATH)
 
 # Plot Loss
+PLOT_PATH = Path('graphs')
+PLOT_PATH.mkdir(parents=True,
+                exist_ok=True)
+PLOT_NAME = "hadron_metrics.png"
+PLOT_SAVE_PATH = PLOT_PATH / PLOT_NAME
 plt.figure(figsize=(10,7))
 plt.plot(list_epoch, list_train_loss, label='Train Loss')
 plt.plot(list_epoch, list_test_loss, label='Test Loss')
@@ -163,4 +155,4 @@ plt.plot(list_epoch, list_chi_squared, label='Chi Squared')
 plt.legend()
 plt.xlabel('Epoch')
 plt.show()
-plt.savefig("hadron_pearson_metrics.png", dpi=300)
+plt.savefig(PLOT_SAVE_PATH, dpi=300)

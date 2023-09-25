@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.20)  24 SEP 2023 16:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.5.20)  25 SEP 2023 11:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -422,12 +422,12 @@ File: graphs/inclusive_correlation_matrix.png Graphic file (type png)
 Package pdftex.def Info: graphs/inclusive_correlation_matrix.png  used on input line 128.
 (pdftex.def)             Requested size: 422.77664pt x 317.07591pt.
  [2]
-<graphs/hadron_correlation_matrix.png, id=44, 976.3677pt x 615.7404pt>
+<graphs/hadron_correlation_matrix.png, id=44, 1156.32pt x 867.24pt>
 File: graphs/hadron_correlation_matrix.png Graphic file (type png)
 <use graphs/hadron_correlation_matrix.png>
 Package pdftex.def Info: graphs/hadron_correlation_matrix.png  used on input line 135.
-(pdftex.def)             Requested size: 422.77664pt x 266.6235pt.
- [3 <./graphs/inclusive_correlation_matrix.png> <./graphs/hadron_correlation_matrix.png>] [4{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [5] (./paper.aux)
+(pdftex.def)             Requested size: 422.77664pt x 317.07591pt.
+ [3 <./graphs/inclusive_correlation_matrix.png>] [4 <./graphs/hadron_correlation_matrix.png>] [5{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] (./paper.aux)
 Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: 57B2926567B7FD8D3A0DFC2996FCB300;515.
  ) 
@@ -438,9 +438,9 @@ Here is how much of TeX's memory you used:
  33098 multiletter control sequences out of 15000+600000
  518005 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,77p,338b,437s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,77p,338b,509s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on paper.pdf (5 pages, 732891 bytes).
+Output written on paper.pdf (5 pages, 1216959 bytes).
 PDF statistics:
  123 PDF objects out of 1000 (max. 8388607)
  89 compressed objects within 1 object stream
