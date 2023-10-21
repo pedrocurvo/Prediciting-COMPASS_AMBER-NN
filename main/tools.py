@@ -64,21 +64,11 @@ def chi_squared(y_true, y_pred, X_test, hadron=False):
     g, x_edges, y_edges = np.histogram2d(g[:,0], g[:,1], bins=[x_bins, y_bins])
 
     nnd = np.array(hist_nnd)
-    g_plus = np.copy(g)
-    g_plus_r = g_plus + r
-    g_plus_r = np.where(g_plus_r == 0, 1, g_plus_r)
     g = np.where(g == 0, 1, g)
-    mean = nnd / g_plus_r # cut 
-    new_array = r / g - mean / (1 - mean) # cut
     denominator = np.sqrt(np.sqrt(r) ** 2 + r * r * np.sqrt(g) ** 2 / g ** 2) / g
     denominator = np.where(denominator == 0, 1, denominator)
-    new_array = new_array * new_array / denominator / denominator # cut
-    new_array = np.nan_to_num(new_array) # cut
-    chi_squared = np.sum(new_array) # cut
     alternative_chi_squared = (r * r + g * r - nnd * (r + g)) / (g * r + g * g - nnd) / denominator
     alternative_chi_squared = alternative_chi_squared * alternative_chi_squared
-    alternative_chi_squared = np.nan_to_num(alternative_chi_squared) # cut
-    alternative_chi_squared = np.sum(alternative_chi_squared) # cut
     return np.sum(np.nan_to_num(alternative_chi_squared))
 
 def chi_squared_3d(y_true, y_pred, X_test):

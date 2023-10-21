@@ -51,19 +51,19 @@ for i in range(len(titles)):
 
 
 # 2D Histograms
-plt.figure(figsize=(16, 9))
+plt.figure(figsize=(20, 9))
 
 # Define the range of the bins for the histograms
 x_bins = [0.004, 0.010, 0.020, 0.030, 0.040, 0.060, 0.100, 0.140, 0.180, 0.400]
 y_bins = [0.10, 0.15, 0.20, 0.30, 0.50, 0.70]
 
 #-----------------------------------Generated Incl Histogram-----------------------------------#
-plt.subplot(2, 2, 1)
+plt.subplot(1, 2, 1)
 weights = file_gen[:,-1]
 plt_hist2d(file_gen[:,0], file_gen[:,1], x_bins, y_bins, 'Generated Incl Histogram', 'Xb', 'Y')
 
 # -----------------------------------2D Xb Y Rec Histogram-----------------------------------#
-plt.subplot(2, 2, 2)
+plt.subplot(1, 2, 2)
 weights = file_rec[:,-1]
 plt_hist2d(file_rec[:,0], file_rec[:,1], x_bins, y_bins, 'Reconstructed Incl Histogram', 'Xb', 'Y')
 

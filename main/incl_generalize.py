@@ -33,35 +33,32 @@ y.nan_to_num(0)
 
 model = ModelV2(input_dim=X.shape[1], hidden_dim=64).to(device)
 
-for i in (0, 0.25):
+# Load Model
+model.load_state_dict(torch.load(f'../NN_incl/{28}.pth'))
+model.eval()
+with torch.inference_mode():
+    # 1. Forward pass
+    test_logits = model(X).squeeze()
+    test_pred = torch.sigmoid(test_logits)
+    # Round 
+    #test_pred = torch.round(abs(test_pred - i))
 
-    # Load Model
-    model.load_state_dict(torch.load(f'../NN_incl/{28}.pth'))
-    model.eval()
-    with torch.inference_mode():
-        # 1. Forward pass
-        test_logits = model(X).squeeze()
-        test_pred = torch.sigmoid(test_logits)
-        # Round 
-        test_pred = torch.round(test_pred - i)
+# Plot 2D Histograms
+plt.figure(figsize=(16, 9))
 
-    # Plot 2D Histograms
-    plt.figure(figsize=(16, 9))
+# Define the range of the bins for the histograms
+x_bins = [0.004, 0.010, 0.020, 0.030, 0.040, 0.060, 0.100, 0.140, 0.180, 0.400]
+y_bins = [0.10, 0.15, 0.20, 0.30, 0.50, 0.70]
 
-    # Define the range of the bins for the histograms
-    x_bins = [0.004, 0.010, 0.020, 0.030, 0.040, 0.060, 0.100, 0.140, 0.180, 0.400]
-    y_bins = [0.10, 0.15, 0.20, 0.30, 0.50, 0.70]
-
-    #-----------------------------------Generated Incl Histogram-----------------------------------#
-    weights = test_pred.cpu().detach().numpy()
-    plt_hist2d(file_incl[:,0], file_incl[:,1], x_bins, y_bins, 'NN Incl Histogram', 'Xb', 'Y', weights=weights)
+#-----------------------------------Generated Incl Histogram-----------------------------------#
+weights = test_pred.cpu().detach().numpy()
+hist_nnd, x_edges, y_edges = np.histogram2d(X[:,0], X[:,1], bins=[x_bins, y_bins], weights=weights)
+hist_true, x_edges, y_edges = np.histogram2d(X[:,0], X[:,1], bins=[x_bins, y_bins], weights=y)
+new_hist = hist_nnd / hist_true
+print(new_hist)
 
 
-    # Save the plot as an image (e.g., PNG)
-    name = str(0.5 + i).replace('.', '')
-    IMAGE_NAME = f'{PREFIX}_xb_y_{name}.png'
-    IMAGE_SAVE_PATH = IMAGE_DIR / IMAGE_NAME
-    plt.savefig(IMAGE_SAVE_PATH, dpi=300)
+print(f'Mean for Set One: {new_hist.mean()}')
             
 
 
