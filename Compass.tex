@@ -24,6 +24,21 @@
 \maketitle
 
 \begin{abstract}
+    The COMPASS experiment, conducted at CERN (the European Organization for Nuclear Research),
+    is a global effort to explore the subatomic world, delving into the intricate structure and properties of hadrons.
+    This paper focuses on the prediction of particle's acceptance by a Neural Network, since the GEANT4 simulation
+    is very time consuming. The data used for the analysis was generated using a LEPTO generator and the full
+    simulation of the COMPASS spectrometer was done using the GEANT4 programme. 
+    The neural network architecture and training process involved two models with different depths and activations.
+    Chi-squared tests are used to evaluate model performance. While accuracy and loss metrics are monitored during
+    training, chi-squared values are the key evaluation criteria. Multiple training iterations are conducted to
+    account for chi-squared instability, with the best models selected post-training.
+    Furthermore, the models are evaluated on a separate dataset to gauge their generalization capabilities.
+    We also explore the possibility of reconstructing the spectrometer's structure using muon and hadron angles.
+    Despite the challenges presented by this complex problem, the models show promise in predicting the acceptance
+    of COMPASS/AMBER. Future work could explore alternative neural network architectures to further improve the
+    models.
+
 \end{abstract}
 
 \section{Introduction}
@@ -200,7 +215,7 @@ In order to have a better understanding of the data, we plotted the histograms f
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{graphs/incl_dx_dz_mu.png}
         \caption{Histogram for $d_xd_zmup$}
-        \label{fig:incl_Angle_mu}
+        \label{fig:incl_Angle_mu_1}
     \end{subfigure}
     \caption{Histograms for $Mom_{mup}$ and $d_xd_zmup$}
 \end{figure}
@@ -312,13 +327,13 @@ Since we're going to use a 2D histogram for the chi-squared test to further eval
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{graphs/hadr_Momentum.png}
         \caption{Histogram for $d_xd_zmup$}
-        \label{fig:had_Angle_mu}
+        \label{fig:had_Angle_mu_2}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{graphs/hadr_dy_dz_mu.png}
         \caption{Histogram for $d_yd_z \mu p$}
-        \label{fig:had_Angle_u}
+        \label{fig:had_Angle_u_3}
     \end{subfigure}
     \caption{Histograms for $d_xd_zmup$ and $d_yd_z \mu p$}
 \end{figure}
@@ -501,7 +516,7 @@ To evaluate the models, we calculated the mean value of the ratio of counts per 
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c}
-    \textbf{Hadron} & \textbf{Inclusive} \\ \hline
+    \textbf{Inclusive} & \textbf{Hadron} \\ \hline
     1.01702 & 1.28094 \\
     \end{tabular}
 \end{table}
@@ -517,8 +532,8 @@ We then proceeded to divide the output by the True Acceptance and calculated the
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c}
-    \textbf{Hadron} & \textbf{Inclusive} \\ \hline
-    1.00000 & 1.00000 \\
+    \textbf{Inclusive} & \textbf{Hadron} \\ \hline
+    1.00948 & 1.27528 \\ 
     \end{tabular}
 \end{table}
 
