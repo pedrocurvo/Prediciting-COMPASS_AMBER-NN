@@ -5,55 +5,62 @@ from sklearn.model_selection import train_test_split
 from models import *
 from tools import *
 import matplotlib.pyplot as plt
+from pathlib import Path
 
-# Percentage of Data to be used
-PERCENT = 1
-
-# Number of Epochs
-EPOCHS = 15
-
-# Device Agnostic Code
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {device}\n")
+# Define if its Hadron or Inclusive
+PREFIX = 'net'
+IMAGE_DIR = Path("../graphs")
 
 # Load Data Files
-file_hadr_rec = np.load('data/hadr_rec.npy')
-file_hadr_gen = np.load('data/hadr_gen.npy')
-
+DATA_DIR = Path("../data")
+HADR_FILE_NAME = "hadron_preprocessed.npy"
+INCL_FILE_NAME = "incl_preprocessed.npy"
 # Merge Generated Data with Reconstructed Data
-file_hadr = np.r_[file_hadr_rec[:int(file_hadr_rec.shape[0]*PERCENT)], file_hadr_gen[:int(file_hadr_gen.shape[0]*PERCENT)]]
-np.random.shuffle(file_hadr)
+file_hadr = np.load(DATA_DIR / HADR_FILE_NAME)
+file_incl = np.load(DATA_DIR / INCL_FILE_NAME)
 
 # Split Data into Target and Features
-X = torch.from_numpy(file_hadr[:,0:(file_hadr.shape[1]-1)]).type(torch.float32)
-#X = torch.index_select(X, dim=1, index=torch.tensor([i for i in range(X.shape[1]) if i != 8])) # Remove Trig
-y = torch.from_numpy(file_hadr[:,-1]).type(torch.float32)
+X_hadr = torch.from_numpy(file_hadr[:,0:(file_hadr.shape[1]-1)]).type(torch.float32)
+y_hadr = torch.from_numpy(file_hadr[:,-1]).type(torch.float32)
+
+X_incl = torch.from_numpy(file_incl[:,0:(file_incl.shape[1]-1)]).type(torch.float32)
+y_incl = torch.from_numpy(file_incl[:,-1]).type(torch.float32)
 
 # Normalize Data
-mean = torch.mean(X, axis=0, keepdims=True)
-stdev = torch.std(X, axis=0, keepdims=True)
-X = (X - mean) / stdev
+mean = torch.mean(X_hadr, axis=0, keepdims=True)
+stdev = torch.std(X_hadr, axis=0, keepdims=True)
+X_hadr = (X_hadr - mean) / stdev
 
-# Split Data
-X_train, X_test, y_train, y_test = train_test_split(X,
-                                                    y,
-                                                    test_size=0.2, # 20% of data for test set and 80% for training set
-                                                    random_state=42
-                                                    )
+mean_incl = torch.mean(X_incl, axis=0, keepdims=True)
+stdev_incl = torch.std(X_incl, axis=0, keepdims=True)
+X_incl = (X_incl - mean_incl) / stdev_incl
 
 # Create Model
-model = ModelV2(input_dim=X_train.shape[1], hidden_dim=64).to(device)
+model_hadr = ModelV2(input_dim=X_hadr.shape[1], hidden_dim=64)
+model_incl = ModelV2(input_dim=X_incl.shape[1], hidden_dim=64)
 
-model.load_state_dict(torch.load('models_hadr/434.pth'))
-model.eval()
+model_hadr.load_state_dict(torch.load('../NN_hadr/317.pth'))
+model_incl.load_state_dict(torch.load('../NN_incl/28.pth'))
+
+model_hadr.eval()
+model_incl.eval()
 with torch.inference_mode():
     # 1. Forward pass
-    test_logits = model(X).squeeze()
-    test_pred = torch.sigmoid(test_logits) # No need to round, since we are looking for the NN acceptance
+    test_logits_hadr = model_hadr(X_hadr).squeeze()
+    test_pred_hadr = torch.sigmoid(test_logits_hadr) # No need to round, since we are looking for the NN acceptance
+    test_logits_incl = model_incl(X_incl).squeeze()
+    test_pred_incl = torch.sigmoid(test_logits_incl) # No need to round, since we are looking for the NN acceptance
 
     plt.figure(figsize=(10,7))
-    plt.hist2d(X[:,-2].cpu(), X[:,-1].cpu(), bins=20000, weights=test_pred.cpu())
+    plt.hist2d(X_hadr[:,-2].cpu(), X_hadr[:,-1].cpu(), bins=20000, weights=test_pred_hadr.cpu())
     plt.xlim(-1, 1)
     plt.ylim(-1, 1)
-    plt.show()
-    plt.savefig("acceptance.png", dpi=300)
+    plt.savefig(IMAGE_DIR / "hadron_angle.png", dpi=300)
+    plt.close()
+
+    plt.figure(figsize=(10,7))
+    plt.hist2d(X_incl[:,-2].cpu(), X_incl[:,-1].cpu(), bins=20000, weights=test_pred_incl.cpu())
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.savefig(IMAGE_DIR / "incl_angle.png", dpi=300)
+    plt.close()
