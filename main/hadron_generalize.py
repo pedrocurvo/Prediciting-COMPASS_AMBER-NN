@@ -34,7 +34,7 @@ y.nan_to_num(0)
 model = ModelV2(input_dim=X.shape[1], hidden_dim=64).to(device)
 
 # Load Model
-model.load_state_dict(torch.load(f'../NN_hadr/{317}.pth'))
+model.load_state_dict(torch.load(f'../NN_hadr/317.pth'))
 model.eval()
 with torch.inference_mode():
     # 1. Forward pass
