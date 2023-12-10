@@ -56,7 +56,7 @@ Instituto Superior T\'ecnico, Lisboa, Portugal
     Despite the challenges presented by this complex problem, the models show promise in predicting the acceptance
     of COMPASS/AMBER. Future work could explore alternative neural network architectures to further improve the
     models.
-    The code is hosted \hyperlink{https://github.com/pedrocurvo/Prediciting-COMPASS_AMBER-NN}{https://github.com/pedrocurvo/Prediciting-COMPASS\_AMBER-NN}
+    The code is hosted at \hyperlink{https://github.com/pedrocurvo/Prediciting-COMPASS_AMBER-NN}{https://github.com/pedrocurvo/Prediciting-COMPASS\_AMBER-NN}
 
 
 % Keywords: avoid repeating title
@@ -422,7 +422,8 @@ of the Neural Network. Since $Mom_{mup}$ and $Y$ have the same correlation coeff
 since from the physics point of view, $Y$ is more important than $Mom_{mup}$, since it is the variable that gives us the virtual photon energy fraction of the initial momentum. 
 
 \subsection{Weighting}
-As previously mentioned, the datasets from the Monte Carlo and the reconstructed data exhibit variations in the number of events. The Monte Carlo dataset contains a larger number of events compared to the reconstructed data. Consequently, we needed to address this disparity to ensure fair and effective training and testing of the Neural Network.
+As previously mentioned, the datasets from the Monte Carlo and the reconstructed data exhibit variations in the number of events.
+The Monte Carlo dataset contains a larger number of events compared to the reconstructed data. Consequently, we needed to address this disparity to ensure fair and effective training and testing of the Neural Network.
 
 Our approach involved a two-step process. Initially, we trained the Neural Network using only a small percentage of the data to fine-tune the hyperparameters. Subsequently, we performed the main training using the entire dataset and tested the model with the full dataset. However, due to the differing event counts in each dataset, it was imperative to balance the data during both stages of training and testing.
 
@@ -481,9 +482,9 @@ the proposed histograms. This adjustment method yielded a chi-squared value clos
 
 \subsection{Evaluation of the Models}
 
-During the training of the models, we printed the accuracy and the loss as metrics to evaluate part of the performance of the models.
-But since the accuracy and loss are not the best metrics to evaluate the performance of the models in this type of problem, the chi-squared test was used to evaluate the performance of the models.
-The chi-squared test is a statistical hypothesis test that is used to evaluate how well a set of data fits a model. In this case, the model is the Neural Network, and the data is the data used for the training and testing of the Neural Network.
+During the training of the models, we kept the chi-squared as a metric to evaluate the performance of the models.
+The chi-squared test is a statistical hypothesis test that is used to evaluate how well a set of data fits a model.
+In this case, the model is the Neural Network, and the data is the data used for the training and testing of the Neural Network.
 For this particular case, the chi-squared was applied to:
 \begin{itemize}
     \item Hadrons: 3D histogram with $X$, $Y$ and $Z$ variables
@@ -510,11 +511,13 @@ In the case of Hadron events, we are looking for a chi-squared value of roughly 
 
 During the model training process, an 80\% portion of the dataset was dedicated to training, while the remaining 20\% was allocated for testing. Notably, both models underwent training and testing with the same dataset to ensure a fair basis for comparison.
 
-Throughout the training phase, metrics like accuracy and loss were monitored to assess the models' performance. However, the primary focus was on tracking the chi-squared values, which played a crucial role in identifying the best models.
+Throughout the training phase, the primary focus was on tracking the chi-squared values, which played a crucial role in identifying the best models.
 
 It's worth noting that the chi-squared values exhibited some instability during training. To account for this, models with chi-squared values were preserved for post-training model selection. This approach allowed for the selection of the best models after considering the chi-squared performance.
 
-Multiple iterations of training were carried out due to the previously mentioned chi-squared instability. To gain insights into the training process, accuracy and loss metrics for both training and testing were plotted and visualized, as depicted in the figure below:
+Multiple iterations of training were carried out due to the previously mentioned chi-squared instability. To gain insights
+into the training process, the chi-squared was plotted and visualized, as depicted
+in the figure below:
 
 For the Hadron events: 
 \begin{figure}[H]
@@ -550,9 +553,15 @@ For the Inclusive events:
 
 
 
-Please keep in mind that the image presented here represents just one of the training sessions.
+Please keep in mind that the image presented here represents just a few of the training sessions.
 
-As observed in the image above, the deeper model exhibited a relatively stable performance but yielded notably high chi-squared values. On the other hand, the less deep model displayed instability but delivered lower chi-squared values. Consequently, we made the decision to discontinue the deeper model and retain the less deep one.
+As observed in the images above, the deeper model exhibited a relatively stable performance but yielded notably high
+chi-squared values. On the other hand, the less deep model displayed instability but delivered lower chi-squared values.
+Consequently, we made the decision to discontinue the deeper model and retain the less deep one, even though it exhibited
+some instability. This decision was made based on the chi-squared values, which are the key evaluation criteria.
+Due to this choice, we needed to be careful when selecting the best models, since the chi-squared values were not stable
+and, thus, we needed to select models that were, on average, the ones in the middle of the training process, not the ones
+in the end. 
 
 Following multiple training sessions and employing a transfer learning approach—initiating the training process with the weights from the best-performing model among the previous runs—we successfully obtained models that met the required chi-squared criteria.
 
@@ -602,18 +611,62 @@ Out of curiosity, we contemplated the possibility of utilizing the muon and hadr
     \end{figure}
 
 
+In figure \ref{fig:muon_angle} we can see kind of a hole in the middle of the histogram, this comes from the fact
+that we have $Q^2 > 1$ and we need finite angles for $\mu'$, thus it was expected that the $g$ inner region
+should be empty, as shown in the figure referenced before. However, on the left edge we can see a band
+between 0.0 and 0.25 (more or less), which can indicate an inefficiency slab in the spectrometer for muons.
+
 In the figure \ref{fig:hadron_angle} we can see a structure and a rectangular frame. To confirm if indeed it's
 the structure of the spectrometer, one needs to have the real structure of the spectrometer and compare it with the histogram.
 Unfortunately, we don't have the real structure of the spectrometer, so we cannot confirm if the histogram is indeed the structure of the spectrometer.
 
-In figure \ref{fig:muon_angle} we can see kind of a hole in the middle of the histogram, which might indicate that all of the muons are going through the middle of the spectrometer and not hitting the outer structure of the spectrometer.
-
 
 \section{Improvements}
-This problem is inherently challenging due to the complex nature of the data and the substantial volume of events involved. As such, there is considerable potential for enhancement. One avenue for improvement involves exploring alternative Neural Network architectures, such as Convolutional Neural Networks (CNN), Recurrent Neural Networks (RNN), Graph Neural Networks (GNN), among others. It's worth noting that these architectures were not employed in this project due to constraints related to time, computational resources, and project scope.
+This problem is inherently challenging due to the complex nature of the data and the substantial volume of events involved.
+As such, there is considerable potential for enhancement. One avenue for improvement involves exploring alternative Neural
+Network architectures, such as Convolutional Neural Networks (CNN), Recurrent Neural Networks (RNN), Graph Neural Networks (GNN),
+among others. It's worth noting that these architectures were not employed in this project due to constraints related to time,
+computational resources, and project scope.
+
+Another possible improvement involves the use of a different loss function. The best approach would be to use Chi-Squared
+as a loss function, but that was not possible to implement during this project due to the lack of time and scope of the project.
+
 
 
 \section{Conclusion}
+In this study, we focused on predicting the acceptance of COMPASS/AMBER using Neural Networks. The COMPASS experiment at CERN,
+dedicated to exploring the subatomic world, provided extensive data generated by a LEPTO generator and simulated using GEANT4.
+The goal was to address the time-consuming nature of GEANT4 simulations by developing Neural Network models capable of predicting
+particle acceptance.
+
+Two distinct Neural Network architectures were employed, differing in depth and activation functions. The training process involved
+evaluating model performance based on chi-squared tests, with a focus on achieving stable results. Despite some instability in the
+training process, models were selected post-training, considering their overall performance.
+
+The data, comprising Inclusive and Hadron events, underwent preprocessing, including balancing and visualization. Correlation
+matrices aided in identifying redundant variables, streamlining the training process.
+
+Weighting was implemented to handle variations in event counts between Monte Carlo and reconstructed datasets. The Neural
+Network's objective was to predict $\frac{R}{R+G}$, requiring an adjustment to $\frac{1 - \text{NN}{\text{out}}}{\text{NN}{\text{out}}}$.
+Adjustments were performed at the final mean value for bins in proposed histograms, resulting in improved chi-squared values.
+
+During the training process, both shallow and deep models were considered, with a preference for models achieving lower
+chi-squared values. Transfer learning further improved model performance.
+
+The evaluation of the models revealed mean ratios close to 1 for both Inclusive and Hadron events, indicating accurate
+predictions of COMPASS/AMBER acceptance. Additionally, the models demonstrated generalization capabilities when tested with
+a separate dataset.
+
+Exploring the potential reconstruction of the spectrometer's structure using muon and hadron angles was also considered.
+Histograms of these angles were generated, laying the groundwork for future investigations into understanding the impact of
+particle interactions with physical objects on detector acceptance.
+
+In conclusion, the Neural Network models presented promise in predicting COMPASS/AMBER acceptance, offering a more efficient
+alternative to time-consuming GEANT4 simulations. Future work could explore alternative neural network architectures to further
+enhance predictive capabilities and delve deeper into the intricacies of spectrometer reconstruction.
+
+
+
 
 \bibliography{BibTexFile}
 %

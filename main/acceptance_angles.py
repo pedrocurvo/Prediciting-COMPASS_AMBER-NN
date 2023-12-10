@@ -50,11 +50,11 @@ with torch.inference_mode():
     test_pred_hadr = torch.sigmoid(test_logits_hadr) # No need to round, since we are looking for the NN acceptance
     test_logits_incl = model_incl(X_incl).squeeze()
     test_pred_incl = torch.sigmoid(test_logits_incl) # No need to round, since we are looking for the NN acceptance
-
+    
     plt.figure(figsize=(10,7))
     plt.hist2d(X_hadr[:,-2].cpu(), X_hadr[:,-1].cpu(), bins=20000, weights=test_pred_hadr.cpu())
-    plt.xlim(-1, 1)
-    plt.ylim(-1, 1)
+    # plt.xlim(-1, 1)
+    # plt.ylim(-1, 1)
     plt.savefig(IMAGE_DIR / "hadron_angle.png", dpi=300)
     plt.close()
 
